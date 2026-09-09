@@ -1,11 +1,575 @@
-浮生札记
 
-随笔
-关于
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>浮生札记 · 个人随笔</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,560;0,9..144,650;1,9..144,400;1,9..144,500&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFE7D8;
+    --paper-deep:#E6DBC6;
+    --ink:#211D17;
+    --ink-soft:#4A443A;
+    --wine:#6E2A39;
+    --olive:#5F6B4D;
+    --rule:#C4B79D;
+    --rule-soft:#D8CDB6;
+    --max: 1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 32px;
+  }
+  @media (max-width:640px){ .wrap{padding:0 20px;} }
 
+  /* ---------- Masthead ---------- */
+  .masthead{
+    padding:36px 0 20px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:560;
+    font-size:clamp(30px, 4.4vw, 44px);
+    letter-spacing:-0.01em;
+    cursor:pointer;
+  }
+  .masthead-right{
+    display:flex;
+    align-items:baseline;
+    gap:22px;
+    font-size:14.5px;
+    color:var(--ink-soft);
+  }
+  .masthead-right .issue{
+    font-style:italic;
+    color:var(--ink-soft);
+  }
+  .nav-link{
+    position:relative;
+    padding-bottom:2px;
+    color:var(--ink);
+  }
+  .nav-link.active, .nav-link:hover{
+    border-bottom:1px solid var(--wine);
+  }
+  .rule{
+    border:none;
+    border-top:1px solid var(--rule);
+    margin:0;
+  }
+  .rule-soft{
+    border:none;
+    border-top:1px solid var(--rule-soft);
+    margin:0;
+  }
 
+  /* ---------- Featured ---------- */
+  .featured{
+    display:grid;
+    grid-template-columns:7fr 1px 4fr;
+    gap:40px;
+    padding:44px 0 40px;
+    align-items:start;
+  }
+  .featured-divider{ background:var(--rule); height:100%; min-height:180px; }
+  @media (max-width:820px){
+    .featured{grid-template-columns:1fr;}
+    .featured-divider{display:none;}
+  }
+  .kicker{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:15px;
+    color:var(--wine);
+    margin:0 0 14px;
+  }
+  .featured-title{
+    font-family:'Fraunces', serif;
+    font-weight:650;
+    font-size:clamp(34px, 5vw, 54px);
+    line-height:1.08;
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+  }
+  .featured-title a{ display:block; }
+  .featured-excerpt{
+    font-family:'Newsreader', serif;
+    font-size:18px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    margin:0 0 18px;
+  }
+  .meta-line{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .meta-line .dot{ color:var(--rule); }
+  .read-link{
+    font-size:14px;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:2px;
+  }
+  .side-note{
+    font-family:'Newsreader', serif;
+    font-style:italic;
+    font-size:16px;
+    line-height:1.7;
+    color:var(--ink-soft);
+    padding-top:4px;
+  }
 
+  /* ---------- Tag filter ---------- */
+  .tagbar{
+    padding:26px 0 22px;
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+    align-items:center;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .tagbar span.label{ color:var(--ink-soft); font-style:italic; font-family:'Fraunces', serif;}
+  .tagbtn{
+    padding-bottom:1px;
+    border-bottom:1px solid transparent;
+    cursor:pointer;
+    background:none;
+    border-top:none; border-left:none; border-right:none;
+    font-family:'Inter', sans-serif;
+    font-size:14px;
+    color:var(--ink-soft);
+  }
+  .tagbtn.active{ color:var(--ink); border-bottom-color:var(--wine); }
+  .tagbtn:hover{ color:var(--ink); }
 
-日常里那些没头没尾的念头，落笔之后就有了形状。这里记着一些平常的时刻——厨房、地铁、窗台、旧物。
-© 浮生札记 · 手写的日常
+  /* ---------- Index grid ---------- */
+  .index-grid{
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    gap:0;
+    padding-bottom:60px;
+  }
+  .entry{
+    grid-column:span 4;
+    padding:26px 26px 30px 0;
+    border-top:1px solid var(--rule);
+  }
+  .entry:nth-child(3n){ padding-right:0; }
+  @media (max-width:900px){
+    .entry{ grid-column:span 6; }
+  }
+  @media (max-width:600px){
+    .entry{ grid-column:span 12; padding-right:0; }
+  }
+  .entry-num{
+    font-family:'Newsreader', serif;
+    font-style:italic;
+    font-size:13px;
+    color:var(--rule);
+    display:block;
+    margin-bottom:10px;
+  }
+  .entry-title{
+    font-family:'Fraunces', serif;
+    font-weight:560;
+    font-size:22px;
+    line-height:1.28;
+    margin:0 0 10px;
+  }
+  .entry-title a:hover{ color:var(--wine); }
+  .entry-excerpt{
+    font-family:'Newsreader', serif;
+    font-size:15.5px;
+    line-height:1.65;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+  }
+  .entry-meta{
+    font-size:12.5px;
+    color:var(--ink-soft);
+  }
 
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--rule);
+    padding:34px 0 46px;
+    display:flex;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  footer .about-blurb{
+    max-width:420px;
+    font-family:'Newsreader', serif;
+    font-style:italic;
+    font-size:15px;
+    line-height:1.6;
+  }
+
+  /* ---------- About page ---------- */
+  .about-page{ padding:60px 0 80px; max-width:640px; }
+  .about-page h1{
+    font-family:'Fraunces', serif;
+    font-weight:650;
+    font-size:clamp(30px,4vw,42px);
+    margin:0 0 26px;
+  }
+  .about-page p{
+    font-family:'Newsreader', serif;
+    font-size:17px;
+    line-height:1.8;
+    color:var(--ink-soft);
+    margin:0 0 20px;
+  }
+
+  /* ---------- Article ---------- */
+  .article-header{ padding:52px 0 30px; max-width:760px; }
+  .back-link{
+    font-size:14px;
+    color:var(--ink-soft);
+    display:inline-block;
+    margin-bottom:26px;
+  }
+  .back-link:hover{ color:var(--wine); }
+  .article-title{
+    font-family:'Fraunces', serif;
+    font-weight:650;
+    font-size:clamp(32px,5vw,50px);
+    line-height:1.14;
+    margin:0 0 20px;
+  }
+  .article-meta{
+    font-size:14px;
+    color:var(--ink-soft);
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .article-body{
+    max-width:680px;
+    padding:10px 0 30px;
+    font-family:'Newsreader', serif;
+    font-size:19px;
+    line-height:1.85;
+    color:var(--ink);
+  }
+  .article-body p{ margin:0 0 26px; }
+  .article-body p:first-of-type::first-letter{
+    font-family:'Fraunces', serif;
+    font-weight:650;
+    font-size:70px;
+    line-height:0.78;
+    float:left;
+    padding:6px 10px 0 0;
+    color:var(--wine);
+  }
+  .pull-quote{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:26px;
+    line-height:1.45;
+    color:var(--wine);
+    border-left:2px solid var(--wine);
+    padding:4px 0 4px 26px;
+    margin:10px 0 34px;
+    max-width:560px;
+  }
+  .article-tags{
+    display:flex; gap:14px; flex-wrap:wrap;
+    padding:18px 0 10px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+  }
+  .article-tags span{ border-bottom:1px solid var(--rule); }
+  .prevnext{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+    padding:30px 0 60px;
+    max-width:760px;
+  }
+  .pn-block{ padding-top:14px; border-top:1px solid var(--rule); }
+  .pn-block .pn-label{ font-size:12.5px; color:var(--ink-soft); font-style:italic; font-family:'Newsreader', serif; margin-bottom:6px; display:block;}
+  .pn-block .pn-title{ font-family:'Fraunces', serif; font-size:17px; font-weight:560; }
+  .pn-block .pn-title:hover{ color:var(--wine); }
+  .pn-right{ text-align:right; }
+  @media (max-width:560px){
+    .prevnext{ grid-template-columns:1fr; }
+    .pn-right{ text-align:left; }
+  }
+
+  [data-view]{ display:none; }
+  [data-view].visible{ display:block; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="masthead">
+    <div class="brand" onclick="go('home')">浮生札记</div>
+    <div class="masthead-right">
+      <span class="issue" id="todayIssue"></span>
+      <a class="nav-link" id="navHome" onclick="go('home')">随笔</a>
+      <a class="nav-link" id="navAbout" onclick="go('about')">关于</a>
+    </div>
+  </div>
+  <hr class="rule">
+</div>
+
+<!-- ---------------- HOME VIEW ---------------- -->
+<div data-view="home" class="visible">
+  <div class="wrap" id="featuredWrap"></div>
+  <div class="wrap">
+    <div class="tagbar" id="tagbar"></div>
+  </div>
+  <div class="wrap">
+    <div class="index-grid" id="indexGrid"></div>
+  </div>
+  <div class="wrap">
+    <footer>
+      <div class="about-blurb">日常里那些没头没尾的念头，落笔之后就有了形状。这里记着一些平常的时刻——厨房、地铁、窗台、旧物。</div>
+      <div>© <span id="year"></span> 浮生札记 · 手写的日常</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ---------------- ABOUT VIEW ---------------- -->
+<div data-view="about">
+  <div class="wrap about-page">
+    <h1>关于这里</h1>
+    <p>浮生札记是一本写给自己的小杂志，记录一些不重要但舍不得忘记的瞬间：一顿深夜的面、一场没带伞的雨、地铁窗外一闪而过的招牌。没有主题限定，只是想把日子过慢一点，写下来的时候再过一遍。</p>
+    <p>更新没有固定的节奏，想写的时候就写。如果你也在这里停留了一会儿，谢谢你。</p>
+    <p style="margin-top:40px;"><a class="back-link" onclick="go('home')">← 回到首页</a></p>
+  </div>
+</div>
+
+<!-- ---------------- ARTICLE VIEW ---------------- -->
+<div data-view="article">
+  <div class="wrap">
+    <div class="article-header">
+      <a class="back-link" onclick="go('home')">← 返回随笔列表</a>
+      <h1 class="article-title" id="artTitle"></h1>
+      <div class="article-meta" id="artMeta"></div>
+    </div>
+    <div class="article-body" id="artBody"></div>
+    <div class="article-tags" id="artTags"></div>
+    <div class="prevnext" id="prevnext"></div>
+  </div>
+</div>
+
+<script>
+const posts = [
+  {
+    id:"midnight-kitchen",
+    issue:14,
+    date:"2026-09-02",
+    tag:"生活",
+    title:"深夜厨房的一碗面",
+    excerpt:"十一点半的厨房，只有抽油烟机的声音陪着我。原来一个人吃饭，也可以吃得很郑重。",
+    quote:"原来一个人吃饭，也可以吃得这样郑重——不是将就，是认真地，只为自己做一顿饭。",
+    tags:["生活","食物","独处"],
+    body:[
+      "十一点半，冰箱里只剩半根葱和一个鸡蛋。我把灯全部关掉，只留灶台上那一盏，锅里的水咕嘟咕嘟响起来的时候，整个厨房忽然变得很安静，安静得能听见自己呼吸的节奏。",
+      "以前总觉得深夜吃东西是一件需要愧疚的事，好像在做什么见不得人的事情。后来慢慢发现，深夜的厨房其实很温柔——没有人催你，没有人看你，你可以把葱花切得歪七扭八，可以尝一口汤就直接用勺子喝，可以站着吃完整碗面也没关系。",
+      "面条下锅之前，我总要愣一下神，想想今天到底发生了什么值得记住的事。大多数时候什么也想不起来，只记得地铁很挤，天气不冷不热，和谁说了句无关紧要的话。可正是这样平淡无奇的一天，配上一碗热腾腾的面，忽然就有了点仪式感。",
+      "吃完面，把碗刷干净，关掉那盏灯，厨房重新陷入黑暗。我站在原地待了几秒，像是在跟这一天做一个简短的告别。明天还是要早起，但至少今天晚上，我好好地喂饱了自己。"
+    ]
+  },
+  {
+    id:"subway-window",
+    issue:13,
+    date:"2026-08-24",
+    tag:"城市",
+    title:"地铁窗外一闪而过的招牌",
+    excerpt:"隧道里没有风景，但每次经过那几个熟悉的老招牌，还是会不自觉地多看一眼。",
+    quote:"那些招牌不知道自己被看见过，可它们确实陪着很多张脸，从年轻坐到了疲惫。",
+    tags:["城市","通勤","记忆"],
+    body:[
+      "每天上班要坐四十分钟地铁，中间穿过三段隧道。隧道里当然没有风景，黑黢黢的墙壁贴着脸飞速倒退，唯一能看的，是偶尔经过地面段时窗外那几块老招牌。",
+      "有一家开了很多年的五金店，招牌掉了一个字，变成了「金 店」，每次经过我都想笑；还有一家理发店的霓虹灯坏了一半，晚上看起来像在眨眼睛。这些招牌我从没进去过，甚至不知道老板长什么样子，可它们已经在我通勤的记忆里出现了几百次。",
+      "有一次线路施工改道，那段路好几个月没经过。等恢复正常线路的那天，我居然有点紧张，怕那些招牌不见了。还好，「金 店」还在，理发店的灯也还在眨眼睛，只是我好像比几个月前又老了一点点。",
+      "地铁里的人总是很疲惫，低着头看手机，很少有人抬头看窗外。但我还是习惯性地在那几秒钟抬起头，看一眼那些招牌——它们不知道自己被看见过，却陪着很多张脸，从年轻坐到了疲惫。"
+    ]
+  },
+  {
+    id:"old-things",
+    issue:12,
+    date:"2026-08-11",
+    tag:"物件",
+    title:"抽屉深处的旧物",
+    excerpt:"一支写不出水的钢笔，一张过期的电影票根，都是舍不得扔掉的、没有用处的证据。",
+    quote:"没有用处，才是它们最大的用处——证明某个时刻真的发生过。",
+    tags:["物件","时间","收纳"],
+    body:[
+      "整理书桌的时候，最底下那个抽屉照例被我留到最后。那里堆着一些明明没有用、却怎么也舍不得扔的东西：一支写不出水的钢笔，一张五年前的电影票根，一枚不知道哪把锁配的钥匙。",
+      "钢笔是大学时候一个朋友送的，笔尖早就干了，泡在水里也救不回来，但我还是把它放在最显眼的位置。它现在唯一的用处，是拿起来的时候能想起那个人当时说的一句话——具体说了什么我已经记不清了，只记得那种被认真对待的感觉。",
+      "电影票根上印着模糊的日期和一部我已经忘了剧情的电影。可我记得那天的天气，记得散场后在路边吃的一碗馄饨。原来票根留住的从来不是电影本身，是电影之外那些琐碎的、本该被遗忘的细节。",
+      "这些东西没有一样能派上用场，可正因为没有用处，它们才显得珍贵——它们唯一的作用，就是证明某个时刻真的发生过，而我不是凭空记得的。抽屉合上的时候，我又一次决定，暂时还不扔。"
+    ]
+  },
+  {
+    id:"rainy-day",
+    issue:11,
+    date:"2026-07-29",
+    tag:"天气",
+    title:"没带伞的那场雨",
+    excerpt:"手机忽然没电，人也忽然没了借口，只好站在屋檐下，第一次认真看了一场雨。",
+    quote:"没有屏幕可看的时候，人才会认真地看一场雨——原来雨落下来的样子，其实很好看。",
+    tags:["天气","停顿","城市"],
+    body:[
+      "那天出门的时候天还好好的，等下班走到楼下，雨已经下得很大了，伞留在了办公室的椅背上。手机电量也刚好在这个时候跳到百分之三，连叫车都来不及。",
+      "我站在便利店的屋檐下，看着雨水顺着招牌的边缘连成一条线落下来，忽然意识到自己已经很久没有这样「无所事事」地站着了——手机没电，人也没了借口，只能干等着。",
+      "站着站着，反倒开始认真看这场雨：路面被砸出细密的水花，一辆车经过带起一片水雾，对面小吃摊的老板娘用塑料布把炉子仔细盖好，动作熟练得像做过一千遍。这些细节，如果手机有电，我大概一个都不会注意到。",
+      "雨小了一些之后我还是决定冒雨走回去，湿了半边肩膀，但心情出乎意料地好。回家路上想，原来慢下来这件事，有时候不是自己选的，是雨和一部没电的手机替我做的决定。"
+    ]
+  },
+  {
+    id:"morning-light",
+    issue:10,
+    date:"2026-07-15",
+    tag:"早晨",
+    title:"六点四十的光",
+    excerpt:"闹钟响之前，天已经先亮了。那束斜斜照进来的光，是一天里最不讲道理的温柔。",
+    quote:"那束光不管我昨晚睡得多晚，也不管我今天有多少事要做，它就那样直直地照过来。",
+    tags:["早晨","光","日常"],
+    body:[
+      "夏天的早晨，闹钟还没响，窗帘缝里已经先漏进来一道光，斜斜地打在墙上，慢慢往下移。我经常在这道光移到床头的时候自然醒过来，比闹钟准时得多。",
+      "六点四十分的光和中午的光完全不一样，它很轻，带着一点凉意，落在地板上的时候几乎没有热度，只有颜色——很浅的、带一点粉的金色。我常常赖床几分钟，就为了看着它一点点往前挪。",
+      "这束光不管我昨晚熬夜到几点，也不管我今天的日程排得多满，它每天都准时出现，不多不少，安静地把房间照亮一遍，然后随着太阳升高慢慢变白、变得寻常。",
+      "后来我渐渐明白，一天里最不讲道理的温柔大概就是这个——它不为任何人特意存在，却刚好每天都照进我的房间。起床之后，那道光就不见了踪影，可我知道，明天它还会再来。"
+    ]
+  }
+];
+
+let currentTag = "全部";
+const tags = ["全部", ...Array.from(new Set(posts.map(p=>p.tag)))];
+
+function fmtDate(d){
+  const dt = new Date(d);
+  return dt.getFullYear()+"年"+(dt.getMonth()+1)+"月"+dt.getDate()+"日";
+}
+function readTime(body){
+  const chars = body.join("").length;
+  return Math.max(1, Math.round(chars/260));
+}
+
+function renderTagbar(){
+  const el = document.getElementById("tagbar");
+  el.innerHTML = '<span class="label">分类</span>' + tags.map(t=>
+    `<button class="tagbtn ${t===currentTag?'active':''}" onclick="setTag('${t}')">${t}</button>`
+  ).join("");
+}
+function setTag(t){
+  currentTag = t;
+  renderTagbar();
+  renderIndex();
+}
+
+function renderFeatured(){
+  const p = posts[0];
+  const el = document.getElementById("featuredWrap");
+  el.innerHTML = `
+    <div class="featured">
+      <div>
+        <p class="kicker">本期头条 · 第${p.issue}期</p>
+        <h2 class="featured-title"><a onclick="openPost('${p.id}')">${p.title}</a></h2>
+        <p class="featured-excerpt">${p.excerpt}</p>
+        <div class="meta-line">
+          <span>${fmtDate(p.date)}</span><span class="dot">·</span><span>${p.tag}</span><span class="dot">·</span><span>${readTime(p.body)} 分钟</span>
+        </div>
+      </div>
+      <div class="featured-divider"></div>
+      <div>
+        <p class="side-note">“${p.quote}”</p>
+        <a class="read-link" onclick="openPost('${p.id}')">阅读全文</a>
+      </div>
+    </div>
+  `;
+}
+
+function renderIndex(){
+  const el = document.getElementById("indexGrid");
+  const list = posts.slice(1).filter(p => currentTag==="全部" || p.tag===currentTag);
+  el.innerHTML = list.map(p => `
+    <div class="entry">
+      <span class="entry-num">第${p.issue}期</span>
+      <h3 class="entry-title"><a onclick="openPost('${p.id}')">${p.title}</a></h3>
+      <p class="entry-excerpt">${p.excerpt}</p>
+      <div class="entry-meta">${fmtDate(p.date)} · ${p.tag}</div>
+    </div>
+  `).join("");
+}
+
+function openPost(id){
+  const idx = posts.findIndex(p=>p.id===id);
+  const p = posts[idx];
+  document.getElementById("artTitle").textContent = p.title;
+  document.getElementById("artMeta").innerHTML = `<span>第${p.issue}期</span><span class="dot">·</span><span>${fmtDate(p.date)}</span><span class="dot">·</span><span>${p.tag}</span><span class="dot">·</span><span>${readTime(p.body)} 分钟阅读</span>`;
+
+  let bodyHtml = "";
+  p.body.forEach((para, i) => {
+    bodyHtml += `<p>${para}</p>`;
+    if(i===1){
+      bodyHtml += `<div class="pull-quote">${p.quote}</div>`;
+    }
+  });
+  document.getElementById("artBody").innerHTML = bodyHtml;
+  document.getElementById("artTags").innerHTML = p.tags.map(t=>`<span>${t}</span>`).join("");
+
+  const prev = posts[idx+1];
+  const next = posts[idx-1];
+  let pn = "";
+  pn += prev ? `<div class="pn-block"><span class="pn-label">上一篇</span><a class="pn-title" onclick="openPost('${prev.id}')">${prev.title}</a></div>` : `<div></div>`;
+  pn += next ? `<div class="pn-block pn-right"><span class="pn-label">下一篇</span><a class="pn-title" onclick="openPost('${next.id}')">${next.title}</a></div>` : `<div></div>`;
+  document.getElementById("prevnext").innerHTML = pn;
+
+  go('article');
+  window.scrollTo(0,0);
+}
+
+function go(view){
+  document.querySelectorAll("[data-view]").forEach(el => el.classList.remove("visible"));
+  document.querySelector(`[data-view="${view}"]`).classList.add("visible");
+  document.getElementById("navHome").classList.toggle("active", view==='home');
+  document.getElementById("navAbout").classList.toggle("active", view==='about');
+  window.scrollTo(0,0);
+}
+
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("todayIssue").textContent = "第" + posts[0].issue + "期 · " + fmtDate(posts[0].date);
+renderFeatured();
+renderTagbar();
+renderIndex();
+</script>
+
+</body>
+</html>
